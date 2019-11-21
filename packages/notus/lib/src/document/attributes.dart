@@ -69,14 +69,17 @@ abstract class NotusAttributeBuilder<T> implements NotusAttributeKey<T> {
 ///   * [NotusAttribute.link]
 ///   * [NotusAttribute.heading]
 ///   * [NotusAttribute.block]
+///   * [NotusAttribute.highlight]
 class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   static final Map<String, NotusAttributeBuilder> _registry = {
     NotusAttribute.bold.key: NotusAttribute.bold,
     NotusAttribute.italic.key: NotusAttribute.italic,
+    NotusAttribute.color.key: NotusAttribute.color,
     NotusAttribute.link.key: NotusAttribute.link,
     NotusAttribute.heading.key: NotusAttribute.heading,
     NotusAttribute.block.key: NotusAttribute.block,
     NotusAttribute.embed.key: NotusAttribute.embed,
+    NotusAttribute.highlight.key: NotusAttribute.highlight,
   };
 
   // Inline attributes
@@ -87,9 +90,14 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
   /// Italic style attribute.
   static const italic = _ItalicAttribute();
 
+  /// Color style attribute.
+  static const color = ColorAttributeBuilder._();
+
   /// Link style attribute.
   // ignore: const_eval_throws_exception
   static const link = LinkAttributeBuilder._();
+
+  static const highlight = HighlightAttributeBuilder._();
 
   // Line attributes
 
@@ -121,6 +129,9 @@ class NotusAttribute<T> implements NotusAttributeBuilder<T> {
 
   /// Alias for [NotusAttribute.block.code].
   static NotusAttribute<String> get code => block.code;
+
+  /// Alias for [NotusAttribute.block.table].
+  static NotusAttribute<String> get tb => block.custom;
 
   /// Embed style attribute.
   // ignore: const_eval_throws_exception
@@ -327,6 +338,34 @@ class _ItalicAttribute extends NotusAttribute<bool> {
   const _ItalicAttribute() : super._('i', NotusAttributeScope.inline, true);
 }
 
+/// Builder for highlight attribute values.
+///
+/// There is no need to use this class directly, consider using
+/// [NotusAttribute.highlight] instead.
+class HighlightAttributeBuilder extends NotusAttributeBuilder<String> {
+  static const _kHighlight = 'bg';
+  const HighlightAttributeBuilder._()
+      : super._(_kHighlight, NotusAttributeScope.inline);
+
+  /// Creates a Highlight attribute with specified Highlight [value].
+  NotusAttribute<String> fromString(String value) =>
+      NotusAttribute<String>._(key, scope, value);
+}
+
+/// Builder for color attribute values.
+///
+/// There is no need to use this class directly, consider using
+/// [NotusAttribute.color] instead.
+class ColorAttributeBuilder extends NotusAttributeBuilder<String> {
+  static const _kColor = 'c';
+  const ColorAttributeBuilder._()
+      : super._(_kColor, NotusAttributeScope.inline);
+
+  /// Creates a Color attribute with specified Color [value].
+  NotusAttribute<String> fromString(String value) =>
+      NotusAttribute<String>._(key, scope, value);
+}
+
 /// Builder for link attribute values.
 ///
 /// There is no need to use this class directly, consider using
@@ -382,6 +421,10 @@ class BlockAttributeBuilder extends NotusAttributeBuilder<String> {
   /// Formats a block of lines as a quote.
   NotusAttribute<String> get quote =>
       NotusAttribute<String>._(key, scope, 'quote');
+
+  /// Formats a block of lines as a table.
+  NotusAttribute<String> get custom =>
+      NotusAttribute<String>._(key, scope, 'cu');
 }
 
 class EmbedAttributeBuilder

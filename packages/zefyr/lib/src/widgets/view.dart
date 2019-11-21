@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:notus/notus.dart';
 
 import 'code.dart';
+import 'custom.dart';
 import 'common.dart';
 import 'image.dart';
 import 'list.dart';
@@ -19,8 +20,13 @@ import 'theme.dart';
 class ZefyrView extends StatefulWidget {
   final NotusDocument document;
   final ZefyrImageDelegate imageDelegate;
+  final ZefyrCustomDelegate customDelegate;
 
-  const ZefyrView({Key key, @required this.document, this.imageDelegate})
+  const ZefyrView(
+      {Key key,
+      @required this.document,
+      this.imageDelegate,
+      this.customDelegate})
       : super(key: key);
 
   @override
@@ -32,6 +38,8 @@ class ZefyrViewState extends State<ZefyrView> {
   ZefyrThemeData _themeData;
 
   ZefyrImageDelegate get imageDelegate => widget.imageDelegate;
+
+  ZefyrCustomDelegate get customDelegate => widget.customDelegate;
 
   @override
   void initState() {
@@ -103,6 +111,8 @@ class ZefyrViewState extends State<ZefyrView> {
       return ZefyrList(node: block);
     } else if (blockStyle == NotusAttribute.block.quote) {
       return ZefyrQuote(node: block);
+    } else if (blockStyle == NotusAttribute.block.custom) {
+      return ZefyrCustom(node: block, delegate: customDelegate);
     }
 
     throw UnimplementedError('Block format $blockStyle.');

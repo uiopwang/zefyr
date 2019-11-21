@@ -13,6 +13,7 @@ export 'src/widgets/buttons.dart' hide HeadingButton, LinkButton;
 export 'src/widgets/code.dart';
 export 'src/widgets/common.dart';
 export 'src/widgets/controller.dart';
+export 'src/widgets/custom.dart';
 export 'src/widgets/editable_text.dart';
 export 'src/widgets/editor.dart';
 export 'src/widgets/field.dart';
