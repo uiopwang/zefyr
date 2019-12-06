@@ -127,7 +127,9 @@ class _RawZefyrLineState extends State<RawZefyrLine> {
   }
 
   TextStyle _getTextStyle(NotusStyle style, ZefyrThemeData theme) {
-    TextStyle result = TextStyle();
+    TextStyle result = TextStyle(
+        fontWeight: FontWeight.w500
+    );
     if (style.containsSame(NotusAttribute.bold)) {
       result = result.merge(theme.boldStyle);
     }
@@ -137,6 +139,7 @@ class _RawZefyrLineState extends State<RawZefyrLine> {
     if (style.contains(NotusAttribute.link)) {
       result = result.merge(theme.linkStyle);
     }
+
     if (style.contains(NotusAttribute.color)) {
       final hexStringToColor = (String hex) {
         hex = hex.replaceFirst('#', '');
@@ -159,6 +162,7 @@ class _RawZefyrLineState extends State<RawZefyrLine> {
       hexStringToColor(style.value<String>(NotusAttribute.highlight));
       result = result.copyWith(backgroundColor: bgColor);
     }
+
     return result;
   }
 
